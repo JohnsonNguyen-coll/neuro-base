@@ -11,7 +11,7 @@ import { Network, Account } from "@aptos-labs/ts-sdk";
 
 // Initialize the Shelby Client
 const shelby = new ShelbyNodeClient({
-  network: Network.TESTNET,
+  network: "shelbynet" as any,
 });
 
 /**

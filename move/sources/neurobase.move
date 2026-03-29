@@ -76,6 +76,24 @@ module neurobase_addr::neurobase {
         vector::push_back(&mut registry.packs, new_pack);
     }
 
+    /// Register an individual memory blob to the owner's registry
+    public entry fun register_blob(
+        account: &signer,
+        blob_id: vector<u8>,
+        price_per_read: u64
+    ) acquires Registry {
+        let addr = signer::address_of(account);
+        let registry = borrow_global_mut<Registry>(addr);
+        
+        let new_blob = MemoryBlob {
+            owner: addr,
+            blob_id,
+            price_per_read,
+            access_count: 0
+        };
+        vector::push_back(&mut registry.blobs, new_blob);
+    }
+
     /// Purchase access to a curated Memory Pack
     public entry fun purchase_pack_access(
         buyer: &signer,
