@@ -1,0 +1,12 @@
+[package]
+name = "NeuroBase"
+version = "1.0.0"
+upgrade_policy = "compatible"
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-framework"
+
+[addresses]
+neurobase_addr = "0xbbccc9904b0303aada1eeaa2876a27545a79384e3a0914e59bb5d8118d3163fe"

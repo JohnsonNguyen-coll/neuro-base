@@ -1,0 +1,23 @@
+# --- NeuroBase Protection ---
+
+# Environment Secrets (Crucial)
+.env
+.env.local
+.env.*.local
+
+# Build & Modules
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Aptos Specifics
+.aptos/
+move/build/
+move/.aptos/
+move/.move/
