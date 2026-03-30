@@ -34,12 +34,12 @@ export default function Sidebar() {
 
   return (
     <aside className="fixed left-0 top-0 h-full w-64 glass-card rounded-none border-r border-white/5 flex flex-col p-6 m-0 z-50">
-      <div className="flex items-center space-x-3 mb-12">
+      <Link href="/" className="flex items-center space-x-3 mb-12 hover:opacity-80 transition-opacity">
         <div className="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center">
           <Brain className="text-white w-6 h-6" />
         </div>
         <h1 className="text-xl font-bold accent-text">NeuroBase</h1>
-      </div>
+      </Link>
 
       <nav className="flex-1 space-y-2">
         {navItems.map((item) => {
