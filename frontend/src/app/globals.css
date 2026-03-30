@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+/* NeuroBase Premium Black & Green Theme */
+
+:root {
+  --background: #000000;
+  --foreground: #e5e7eb;
+  --accent: #22c55e;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(34, 197, 94, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+  }
+
+  .accent-text {
+    color: var(--accent);
+  }
+
+  .neuro-btn {
+    background-color: var(--accent);
+    color: black;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 14px 0 rgba(34, 197, 94, 0.39);
+  }
+
+  .neuro-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+    filter: brightness(1.1);
+  }
+}
+
+.bg-mesh {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-color: #000000;
+}
