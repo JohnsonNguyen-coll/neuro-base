@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag, Star, User, Unlock, Tag, Search, TrendingUp, Database, Zap } from "lucide-react";
+import { ShoppingBag, Star, User, Unlock, Tag, Search, TrendingUp, Database, Zap, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { ShelbyClient } from "@shelby-protocol/sdk/browser";
@@ -11,13 +11,15 @@ export default function Marketplace() {
   const { connected, account, signAndSubmitTransaction } = useWallet();
   const [purchasing, setPurchasing] = useState<string | null>(null);
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
   const OWNER_ADDR = "0xbbccc9904b0303aada1eeaa2876a27545a79384e3a0914e59bb5d8118d3163fe"; // Admin / Global Registry Addr for now
 
   const fetchMemories = async () => {
     setLoading(true);
     try {
-      // In a real decentralized marketplace we might query a global indexer.
-      // For now, we fetch the known registry's blobs
       const res = await fetch(`https://api.shelbynet.shelby.xyz/v1/accounts/${OWNER_ADDR}/resource/${OWNER_ADDR}::neurobase::Registry`);
       if (res.ok) {
         const data = await res.json();
@@ -78,13 +80,24 @@ export default function Marketplace() {
 
       const response = await signAndSubmitTransaction(payload as any);
       alert(`Payment successful! TX: ${response.hash}\nYou can now access this pack.`);
-      // Re-fetch or download logic here...
     } catch (error: any) {
       console.error("Payment failed", error);
       alert("Payment failed: " + (error?.message || "User rejected"));
     } finally {
       setPurchasing(null);
     }
+  };
+
+  // Pagination logic
+  const totalPages = Math.ceil(memories.length / itemsPerPage);
+  const currentMemories = memories.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const prevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const nextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
   return (
@@ -112,12 +125,13 @@ export default function Marketplace() {
       </header>
 
       {/* Featured Packs Grid */}
-      <section className="space-y-6">
+      <section className="space-y-8">
         {loading && <div className="text-gray-400 font-bold animate-pulse flex items-center gap-2"><Zap size={16} /> Fetching on-chain memories...</div>}
         {!loading && memories.length === 0 && <div className="text-gray-500 text-sm">No memory packs found on chain.</div>}
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {memories.map((pack) => (
-            <div key={pack.id} className="glass-card flex flex-col group overflow-hidden border border-white/5 hover:border-green-500/30 transition-all duration-300">
+          {currentMemories.map((pack, index) => (
+            <div key={`${pack.id}-${index}`} className="glass-card flex flex-col group overflow-hidden border border-white/5 hover:border-green-500/30 transition-all duration-300">
                {/* Card Cover */}
                <div className={`h-40 ${pack.image_color} relative overflow-hidden`}>
                   <div className="absolute inset-0 flex items-center justify-center opacity-30 group-hover:scale-110 transition-all duration-700">
@@ -163,6 +177,29 @@ export default function Marketplace() {
             </div>
           ))}
         </div>
+
+        {/* Pagination Controls */}
+        {!loading && totalPages > 1 && (
+          <div className="flex items-center justify-center gap-4 pt-6">
+             <button 
+               onClick={prevPage} 
+               disabled={currentPage === 1}
+               className="p-3 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+             >
+               <ChevronLeft size={20} />
+             </button>
+             <div className="text-sm font-bold text-gray-400">
+                Page <span className="text-white">{currentPage}</span> of <span className="text-white">{totalPages}</span>
+             </div>
+             <button 
+               onClick={nextPage} 
+               disabled={currentPage === totalPages}
+               className="p-3 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+             >
+               <ChevronRight size={20} />
+             </button>
+          </div>
+        )}
       </section>
 
       {/* Sell Your Own Hint */}

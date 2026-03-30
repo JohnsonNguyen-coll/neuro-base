@@ -1,6 +1,6 @@
 "use client";
 
-import { Upload, PieChart, Shield, History, Plus, MoreVertical, Database, Zap, ExternalLink, Brain } from "lucide-react";
+import { Upload, PieChart, Shield, History, Plus, MoreVertical, Database, Zap, ExternalLink, Brain, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
@@ -20,6 +20,9 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const { connected, account, signAndSubmitTransaction } = useWallet();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const OWNER_ADDR = "0xbbccc9904b0303aada1eeaa2876a27545a79384e3a0914e59bb5d8118d3163fe";
 
@@ -285,6 +288,17 @@ export default function Home() {
     }
   };
 
+  const totalPages = Math.ceil(memories.length / itemsPerPage);
+  const currentMemories = memories.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const prevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const nextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
   const stats = [
     { name: "Global Knowledge", value: loading ? "..." : memories.length + " Blobs", icon: Database, change: "Ready" },
     { name: "My Earnings", value: "0.0 APT", icon: PieChart, change: "No access yet" },
@@ -332,7 +346,7 @@ export default function Home() {
 
            <div className="space-y-4">
              {loading && <div className="text-center p-4">Loading real memories from Shelbynet...</div>}
-             {memories.map((memory: any, index: number) => (
+             {currentMemories.map((memory: any, index: number) => (
                <div key={`${memory.id}-${index}`} className="glass-card p-5 flex items-center justify-between hover:bg-white/5 border border-white/5 hover:border-green-500/30 transition-all cursor-pointer group">
                   <div className="flex items-center gap-5 flex-1 min-w-0 pr-4">
                      <div className="w-12 h-12 shrink-0 rounded-full bg-green-500/5 flex items-center justify-center text-green-500 group-hover:bg-green-500 group-hover:text-white transition-all">
@@ -363,6 +377,29 @@ export default function Home() {
              {!loading && memories.length === 0 && (
                <div className="p-8 text-center glass-card border-dashed border-white/10 opacity-50 grayscale">
                   <p className="text-sm font-bold text-gray-500 tracking-widest">No memories uploaded yet...</p>
+               </div>
+             )}
+
+             {/* Pagination Controls */}
+             {!loading && totalPages > 1 && (
+               <div className="flex items-center justify-between pt-4">
+                  <button 
+                    onClick={prevPage} 
+                    disabled={currentPage === 1}
+                    className="p-2 rounded-lg bg-white/5 border border-white/10 text-white hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+                  <div className="text-xs font-bold text-gray-400">
+                     Page <span className="text-white">{currentPage}</span> of <span className="text-white">{totalPages}</span>
+                  </div>
+                  <button 
+                    onClick={nextPage} 
+                    disabled={currentPage === totalPages}
+                    className="p-2 rounded-lg bg-white/5 border border-white/10 text-white hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
                </div>
              )}
           </div>
