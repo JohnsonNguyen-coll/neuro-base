@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Brain, MessageSquare, PieChart, Settings, Wallet, ShoppingBag } from "lucide-react";
 import { clsx } from "clsx";
 
-import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { WalletSelector } from "@aptos-labs/wallet-adapter-ant-design";
 
 const navItems = [
   { name: "My Brain", icon: Brain, href: "/dashboard" },
@@ -17,20 +17,6 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { connect, disconnect, account, connected, wallets } = useWallet();
-
-  const handleWalletAction = () => {
-    if (connected) {
-      disconnect();
-    } else {
-      const petra = wallets?.find((w: any) => w.name === "Petra");
-      if (petra) {
-        connect(petra.name);
-      } else {
-        alert("Please install Petra Wallet to connect.");
-      }
-    }
-  };
 
   return (
     <aside className="fixed left-0 top-0 h-full w-64 glass-card rounded-none border-r border-white/5 flex flex-col p-6 m-0 z-50">
@@ -62,21 +48,8 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-auto pt-6 border-t border-white/5">
-        <button 
-          onClick={handleWalletAction}
-          className="flex items-center space-x-3 w-full p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all"
-        >
-          <Wallet className="w-5 h-5 text-green-400" />
-          <div className="text-left">
-            <p className="text-xs text-gray-400 capitalize tracking-widest font-bold">
-              {connected ? "Connected" : "Wallet"}
-            </p>
-            <p className="text-sm font-semibold truncate max-w-[120px]">
-              {connected && account ? String(account.address).slice(0, 4) + "..." + String(account.address).slice(-4) : "Connect"}
-            </p>
-          </div>
-        </button>
+      <div className="mt-auto pt-6 border-t border-white/5 flex justify-center">
+        <WalletSelector />
       </div>
     </aside>
   );
