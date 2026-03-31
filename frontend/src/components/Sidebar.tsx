@@ -48,7 +48,7 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-auto pt-6 border-t border-white/5 flex justify-center">
+      <div id="neuro-wallet-wrapper" className="mt-auto pt-6 border-t border-white/5 w-full">
         <WalletSelector />
       </div>
     </aside>
