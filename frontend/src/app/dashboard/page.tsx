@@ -24,13 +24,27 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const OWNER_ADDR = "0xbbccc9904b0303aada1eeaa2876a27545a79384e3a0914e59bb5d8118d3163fe";
+  const [hasRegistry, setHasRegistry] = useState(true); // Default to true until checked
+  const [initializing, setInitializing] = useState(false);
+
+  const MODULE_ADDR = "0xbbccc9904b0303aada1eeaa2876a27545a79384e3a0914e59bb5d8118d3163fe";
 
   const fetchMemories = async () => {
+    if (!connected || !account) {
+        setMemories([]);
+        setLoading(false);
+        return;
+    }
+    
     setLoading(true);
+    const userAddress = account.address;
+    
     try {
-      const res = await fetch(`https://api.shelbynet.shelby.xyz/v1/accounts/${OWNER_ADDR}/resource/${OWNER_ADDR}::neurobase::Registry`);
+      // Check if Registry exists for this user
+      const res = await fetch(`${process.env.NEXT_PUBLIC_APTOS_RPC_URL || 'https://api.shelbynet.shelby.xyz/v1'}/accounts/${userAddress}/resource/${MODULE_ADDR}::neurobase::Registry`);
+      
       if (res.ok) {
+        setHasRegistry(true);
         const data = await res.json();
         const parsedBlobs = data.data.blobs.map((blob: any) => {
           let hex = blob.blob_id;
@@ -43,13 +57,17 @@ export default function Home() {
           const rawPrice = parseInt(blob.price_per_read) / 100000000;
           return {
             id: blob.blob_id,
-            fullName: name, // Store the full '0xaddress/filename'
+            fullName: name, 
             name: cleanName,
             price: rawPrice === 0 ? "Free" : rawPrice.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 5 }) + " APT",
-            accessed: blob.access_count + " times"
+            accessed: blob.access_count + " times",
+            owner: userAddress // Mark current user as owner
           };
         });
         setMemories(parsedBlobs);
+      } else if (res.status === 404) {
+        setHasRegistry(false);
+        setMemories([]);
       }
     } catch (err) {
       console.error("Failed to fetch memories from chain", err);
@@ -59,8 +77,48 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchMemories();
-  }, []);
+    if (connected && account) {
+      fetchMemories();
+    } else {
+        setMemories([]);
+    }
+  }, [connected, account]);
+
+  const handleInitRegistry = async () => {
+    if (!connected || !account) return;
+    setInitializing(true);
+    try {
+      const payload = {
+        data: {
+          function: `${MODULE_ADDR}::neurobase::init_registry`,
+          typeArguments: [],
+          functionArguments: []
+        }
+      };
+      const response = await signAndSubmitTransaction(payload as any);
+      console.log(`[NeuroBase UI] Registry Initialized: ${response.hash}`);
+      
+      setModal({
+        isOpen: true,
+        title: "Registry Initialized",
+        message: "Your personal NeuroBase registry is now live on-chain.",
+        type: "success"
+      });
+      
+      // Refresh memory list
+      setTimeout(fetchMemories, 3000);
+    } catch (error: any) {
+      console.error("Initialization failed", error);
+      setModal({
+        isOpen: true,
+        title: "Initialization Failed",
+        message: error?.message || "Failed to initialize registry.",
+        type: "error"
+      });
+    } finally {
+      setInitializing(false);
+    }
+  };
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -73,6 +131,16 @@ export default function Home() {
         type: "error"
       });
       return;
+    }
+
+    if (!hasRegistry) {
+        setModal({
+          isOpen: true,
+          title: "Registry Required",
+          message: "Please initialize your NeuroBase registry before uploading memories.",
+          type: "info"
+        });
+        return;
     }
 
     setUploading(true);
@@ -92,7 +160,6 @@ export default function Home() {
       // 2. Register Blob on Shelby L1 Registry
       console.log("[NeuroBase UI] Asking user to sign Shelby L1 registration transaction...");
       
-      // We must use the user's account address
       const userAddressStr = String(account.address);
       
       const payload = ShelbyBlobClient.createRegisterBlobPayload({
@@ -108,14 +175,12 @@ export default function Home() {
       const response = await signAndSubmitTransaction({ data: payload } as any);
       console.log(`[NeuroBase UI] Shelby L1 Trx Hash: ${response.hash}. Waiting for confirmation...`);
 
-      // Wait for Aptos transaction confirmation implicitly
       await shelbyClient.aptos.waitForTransaction({ transactionHash: response.hash });
       
-      // Wait extra 3 seconds for the Shelby GraphQL indexer to catch up and see the blob metadata
       console.log(`[NeuroBase UI] Waiting for Shelby Indexer to synchronize...`);
-      await new Promise(r => setTimeout(r, 3000));
+      await new Promise(r => setTimeout(r, 4000));
 
-      // 3. Thực tế tải file lên Shelby Protocol
+      // 3. Upload actual data to Shelby Node
       console.log(`[NeuroBase UI] Uploading actual data to Shelby Node...`);
       await shelbyClient.rpc.putBlob({
          account: userAddressStr as any,
@@ -132,7 +197,7 @@ export default function Home() {
 
       const nbPayload = {
         data: {
-          function: `${OWNER_ADDR}::neurobase::register_blob`,
+          function: `${MODULE_ADDR}::neurobase::register_blob`,
           typeArguments: [],
           functionArguments: [
             `0x${identifierHex}`, // hex representation of blob_id bytes
@@ -150,7 +215,7 @@ export default function Home() {
         message: `Knowledge Pack registered!\nTX: ${nbResponse.hash.slice(0, 10)}...`,
         type: "success"
       });
-      fetchMemories();
+      setTimeout(fetchMemories, 3000);
     } catch (error: any) {
       console.error("Upload failed", error);
       if (error?.message?.includes('User has rejected the request') || error?.name === 'UserRejectedRequestError' || error === 'User rejected the request') {
@@ -181,38 +246,39 @@ export default function Home() {
     }
 
     try {
-      console.log(`[NeuroBase UI] Purchasing access to memory: ${memory.name}`);
-      let priceFloat = parseFloat(memory.price.replace(" APT", ""));
-      let amountInOctas = Math.floor(priceFloat * 100000000);
+      const userAddressStr = String(account.address);
+      const isOwner = memory.owner === userAddressStr;
 
-      const payload = {
-        data: {
-          function: "0x1::aptos_account::transfer",
-          typeArguments: [],
-          functionArguments: [
-            OWNER_ADDR,
-            amountInOctas
-          ]
-        }
-      };
+      if (!isOwner) {
+        console.log(`[NeuroBase UI] Purchasing access to memory: ${memory.name}`);
+        let priceFloat = parseFloat(memory.price.replace(" APT", ""));
+        let amountInOctas = Math.floor(priceFloat * 100000000);
 
-      console.log("[NeuroBase UI] Asking user to sign payment transaction...");
-      const response = await signAndSubmitTransaction(payload as any);
+        const payload = {
+          data: {
+            function: "0x1::aptos_account::transfer",
+            typeArguments: [],
+            functionArguments: [
+              memory.owner,
+              amountInOctas
+            ]
+          }
+        };
+
+        console.log("[NeuroBase UI] Asking user to sign payment transaction...");
+        const response = await signAndSubmitTransaction(payload as any);
+        console.log(`[NeuroBase UI] Payment successful, hash: ${response.hash}`);
+      } else {
+        console.log(`[NeuroBase UI] Accessing self-owned memory: ${memory.name}`);
+      }
       
-      console.log(`[NeuroBase UI] Payment successful, now retrieving data for ${memory.name} from Shelby Protocol...`);
+      console.log(`[NeuroBase UI] Retrieving data for ${memory.name} from Shelby Protocol...`);
       
-      // Real download logic using Shelby SDK
       try {
         const shelbyClient = new ShelbyClient({
-          network: "shelbynet" as any, // Match the API we are fetching memories from
+          network: "shelbynet" as any,
         });
 
-        console.log(`[NeuroBase UI] Attempting Shelby download - Account: ${OWNER_ADDR}, BlobName: ${memory.fullName || memory.name}`);
-        // In Shelby, if blobs are stored using 'account/filename' as the unique ID, 
-        // we should try downloading it directly without the account context as a fallback.
-        // The issue is that 'memory.fullName' is hex-encoded (e.g., "0x...").
-        // Shelby SDK's download() method internally hex-encodes the blobName.
-        // We MUST decode the hex back to a simple string before passing it to the SDK.
         let rawIdentifier = memory.fullName || memory.name;
         if (rawIdentifier.startsWith('0x')) {
           let hex = rawIdentifier.slice(2);
@@ -223,10 +289,8 @@ export default function Home() {
           rawIdentifier = str;
         }
         
-        console.log("[NeuroBase UI] Decoded Identifier for SDK:", rawIdentifier);
-
         // Splitting logic: if identifier is '0xabc123/file.txt', we split it
-        let downloadedAccount = OWNER_ADDR;
+        let downloadedAccount = memory.owner;
         let downloadedBlobName = rawIdentifier;
         if (rawIdentifier.includes('/')) {
             const parts = rawIdentifier.split('/');
@@ -239,11 +303,7 @@ export default function Home() {
           blobName: downloadedBlobName,
         };
         
-        console.log("[NeuroBase UI] Final Download Params:", downloadParams);
-
         let blobObj = await shelbyClient.download(downloadParams);
-
-        // Convert the ReadableStream to a Blob
         const reader = blobObj.readable.getReader();
         const chunks = [];
         while (true) {
@@ -253,14 +313,12 @@ export default function Home() {
         }
         const blob = new Blob(chunks);
         const url = URL.createObjectURL(blob);
-        
-        // Open the file in a new tab
         window.open(url, "_blank");
 
         setModal({
           isOpen: true,
           title: "Recall Successful",
-          message: `Memory retrieved from Shelby Protocol. Opening file...`,
+          message: isOwner ? `Memory retrieved. Opening file...` : `Access purchased & memory retrieved. Opening file...`,
           type: "success"
         });
       } catch (shelbyErr: any) {
@@ -268,7 +326,7 @@ export default function Home() {
         setModal({
           isOpen: true,
           title: "Retrieval Error",
-          message: `Payment OK, but content retrieval failed: ${shelbyErr.message}`,
+          message: `Connection to Shelby Node failed: ${shelbyErr.message}`,
           type: "error"
         });
       }
@@ -276,12 +334,12 @@ export default function Home() {
     } catch (error: any) {
       console.error("Recall failed", error);
       if (error?.message?.includes('User has rejected the request') || error?.name === 'UserRejectedRequestError' || error === 'User rejected the request') {
-        console.log("Recall cancelled: User rejected the payment.");
+        console.log("Recall cancelled by user.");
       } else {
         setModal({
           isOpen: true,
-          title: "Payment Error",
-          message: error?.message || "Transaction failed.",
+          title: "Recall Failed",
+          message: error?.message || "Transaction or retrieval failed.",
           type: "error"
         });
       }
@@ -352,15 +410,15 @@ export default function Home() {
                      <div className="w-12 h-12 shrink-0 rounded-full bg-green-500/5 flex items-center justify-center text-green-500 group-hover:bg-green-500 group-hover:text-white transition-all">
                         <Database size={20} />
                      </div>
-                     <div className="flex-1 min-w-0">
+                      <div className="flex-1 min-w-0">
                         <h4 className="text-lg font-bold text-white tracking-tight truncate">{memory.name}</h4>
                         <p className="text-xs text-gray-400 flex items-center gap-2 truncate">
-                           Owner: {OWNER_ADDR.slice(0,6)}...{OWNER_ADDR.slice(-4)} 
+                           Owner: {memory.owner.slice(0,6)}...{memory.owner.slice(-4)} 
                            <span className="w-1 h-1 rounded-full bg-gray-600"></span>
                            Decentralized <span className="w-1 h-1 rounded-full bg-gray-600"></span> 
                            Accessed: {memory.accessed}
                         </p>
-                     </div>
+                      </div>
                   </div>
                   <div className="flex items-center gap-6">
                      <div className="text-right sr-only md:not-sr-only">
@@ -406,8 +464,25 @@ export default function Home() {
         </div>
 
         {/* Action Sidebar */}
-        <div className="space-y-6">
-           <div className="glass-card p-8 border-dashed border-2 border-green-500/20 text-center space-y-6">
+         <div className="space-y-6">
+            {!hasRegistry && connected && (
+               <div className="glass-card p-8 border-2 border-green-500/50 bg-green-500/5 text-center space-y-4 animate-pulse">
+                  <div className="w-12 h-12 rounded-full bg-green-500/20 mx-auto flex items-center justify-center text-green-400">
+                    <Zap size={24} />
+                  </div>
+                  <h4 className="text-md font-bold text-white">Setup Required</h4>
+                  <p className="text-xs text-gray-400">You need to initialize your NeuroBase Registry before you can upload memories.</p>
+                  <button 
+                    onClick={handleInitRegistry}
+                    disabled={initializing}
+                    className="neuro-btn w-full py-3 text-[10px] font-black"
+                  >
+                    {initializing ? "Initializing..." : "Initialize Registry"}
+                  </button>
+               </div>
+            )}
+
+            <div className="glass-card p-8 border-dashed border-2 border-green-500/20 text-center space-y-6">
               <div className="w-16 h-16 rounded-2xl bg-green-500/20 mx-auto flex items-center justify-center text-green-400 mb-2">
                 <Upload size={28} />
               </div>
