@@ -10,13 +10,22 @@ export default function Earnings() {
   const [totalCalls, setTotalCalls] = useState(0);
   const [incomeStreams, setIncomeStreams] = useState<any[]>([]);
 
-  const OWNER_ADDR = "0xbbccc9904b0303aada1eeaa2876a27545a79384e3a0914e59bb5d8118d3163fe";
-  const { account } = useWallet();
+  const { connected, account } = useWallet();
+  const MODULE_ADDR = "0xbbccc9904b0303aada1eeaa2876a27545a79384e3a0914e59bb5d8118d3163fe";
 
   const fetchEarningsData = async () => {
+    if (!connected || !account) {
+        setIncomeStreams([]);
+        setTotalEarnings(0);
+        setTotalCalls(0);
+        return;
+    }
+
     setLoading(true);
+    const userAddress = account.address;
+
     try {
-      const res = await fetch(`https://api.shelbynet.shelby.xyz/v1/accounts/${OWNER_ADDR}/resource/${OWNER_ADDR}::neurobase::Registry`);
+      const res = await fetch(`https://api.shelbynet.shelby.xyz/v1/accounts/${userAddress}/resource/${MODULE_ADDR}::neurobase::Registry`);
       if (res.ok) {
         const data = await res.json();
         let totalVal = 0;
@@ -43,11 +52,15 @@ export default function Earnings() {
             accessed: accessed,
             earned: earned
           };
-        }).filter((s: any) => s.accessed > 0); // Only show ones that earned something
+        }).filter((s: any) => s.accessed >= 0); // Include all blobs but highlight ones with calls
 
         setTotalEarnings(totalVal);
         setTotalCalls(calls);
         setIncomeStreams(streams);
+      } else {
+        setIncomeStreams([]);
+        setTotalEarnings(0);
+        setTotalCalls(0);
       }
     } catch (err) {
       console.error("Failed to fetch earnings", err);
@@ -58,7 +71,7 @@ export default function Earnings() {
 
   useEffect(() => {
     fetchEarningsData();
-  }, [account]);
+  }, [connected, account]);
 
   return (
     <div className="space-y-12 animate-in fade-in duration-700">

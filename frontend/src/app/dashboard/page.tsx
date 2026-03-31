@@ -61,7 +61,7 @@ export default function Home() {
             name: cleanName,
             price: rawPrice === 0 ? "Free" : rawPrice.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 5 }) + " APT",
             accessed: blob.access_count + " times",
-            owner: userAddress // Mark current user as owner
+            owner: String(userAddress) // Ensure owner is a string
           };
         });
         setMemories(parsedBlobs);
@@ -413,7 +413,7 @@ export default function Home() {
                       <div className="flex-1 min-w-0">
                         <h4 className="text-lg font-bold text-white tracking-tight truncate">{memory.name}</h4>
                         <p className="text-xs text-gray-400 flex items-center gap-2 truncate">
-                           Owner: {memory.owner.slice(0,6)}...{memory.owner.slice(-4)} 
+                           Owner: {String(memory.owner).slice(0,6)}...{String(memory.owner).slice(-4)} 
                            <span className="w-1 h-1 rounded-full bg-gray-600"></span>
                            Decentralized <span className="w-1 h-1 rounded-full bg-gray-600"></span> 
                            Accessed: {memory.accessed}
