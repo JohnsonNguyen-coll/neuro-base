@@ -59,9 +59,10 @@ export default function Home() {
             id: blob.blob_id,
             fullName: name, 
             name: cleanName,
-            price: rawPrice === 0 ? "Free" : rawPrice.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 5 }) + " APT",
+            price: "Free", // Since dashboard only shows owner's memories, it's free for them
+            originalPrice: rawPrice === 0 ? "0 APT" : rawPrice.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 5 }) + " APT",
             accessed: blob.access_count + " times",
-            owner: String(userAddress) // Ensure owner is a string
+            owner: String(userAddress) 
           };
         });
         setMemories(parsedBlobs);
