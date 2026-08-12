@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, Zap, Lock, RefreshCw, MoreHorizontal } from "lucide-react";
+import { Send, Bot, User, Zap, Lock, MoreHorizontal } from "lucide-react";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 export default function LiveChat() {
@@ -61,6 +61,9 @@ export default function LiveChat() {
         <h2 className="text-3xl font-extrabold tracking-tight">Personal <span className="text-green-500">Live Chat</span></h2>
         <p className="text-gray-400 text-sm max-w-xl">
           Test your memory packs. This AI Agent relies on Model Context Protocol (MCP) to read your uploaded decentralized data on the fly.
+        </p>
+        <p className="text-xs font-semibold leading-5 text-amber-300/90">
+          Demo mode: MCP retrieval is prepared, but live AI responses require a configured model API key before production use.
         </p>
       </header>
 
@@ -137,7 +140,7 @@ export default function LiveChat() {
             </div>
             <div className="text-center mt-3">
                <p className="text-[10px] uppercase tracking-widest text-gray-600 font-bold">
-                 Queries are securely routed via Model Context Protocol (MCP) <span className="text-green-500">&bull; End-to-End Local</span>
+                 MCP-ready local chat <span className="text-amber-300">&bull; Live model API key not configured</span>
                </p>
             </div>
          </div>

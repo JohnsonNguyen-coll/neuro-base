@@ -1,142 +1,181 @@
 @import "tailwindcss";
 
-/* NeuroBase Premium Black & Green Theme */
-
 :root {
-  --background: #000000;
-  --foreground: #e5e7eb;
-  --accent: #22c55e;
+  --background: #081817;
+  --foreground: #f7f8f5;
+  --surface: #10201f;
+  --surface-soft: #172c2a;
+  --accent: #008f8a;
+  --accent-bright: #2ee9dc;
+  --warning: #f4b95a;
+  --muted: #91a5a1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Inter", sans-serif;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
 @layer components {
   .glass-card {
-    background: rgba(34, 197, 94, 0.05);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(34, 197, 94, 0.2);
-    border-radius: 1rem;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+    background: rgba(16, 32, 31, 0.78);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(247, 248, 245, 0.1);
+    border-radius: 0.5rem;
+    box-shadow: 0 20px 48px -28px rgba(0, 0, 0, 0.85);
   }
 
   .accent-text {
-    color: var(--accent);
+    color: var(--accent-bright);
   }
 
   .neuro-btn {
-    background-color: var(--accent);
-    color: black;
-    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
     border-radius: 0.5rem;
-    font-weight: 600;
-    transition: all 0.2s ease-in-out;
-    box-shadow: 0 4px 14px 0 rgba(34, 197, 94, 0.39);
+    background-color: var(--accent);
+    color: white;
+    padding: 0.75rem 1.35rem;
+    font-weight: 800;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 14px 32px rgba(0, 143, 138, 0.22);
   }
 
   .neuro-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
-    filter: brightness(1.1);
+    background-color: #00a8a0;
+    transform: translateY(-1px);
+    box-shadow: 0 18px 36px rgba(0, 143, 138, 0.3);
+  }
+
+  .neuro-btn-small {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border-radius: 0.5rem;
+    background: rgba(46, 233, 220, 0.12);
+    color: var(--accent-bright);
+    padding: 0.55rem 0.9rem;
+    font-size: 0.78rem;
+    font-weight: 900;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .neuro-btn-small:hover {
+    background: var(--accent-bright);
+    color: #061211;
   }
 }
 
 .bg-mesh {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   z-index: -1;
-  background-color: #000000;
+  background:
+    linear-gradient(145deg, rgba(8, 24, 23, 0.98), rgba(16, 32, 31, 0.98)),
+    radial-gradient(circle at 18% 12%, rgba(46, 233, 220, 0.12), transparent 32%),
+    radial-gradient(circle at 78% 8%, rgba(244, 185, 90, 0.1), transparent 28%);
 }
-/* Wallet Selector Overrides - NeuroBase Premium Green and Black Styling */
+
+.landing-shell {
+  color-scheme: light;
+}
+
+/* Wallet Selector Overrides */
 #neuro-wallet-wrapper .ant-btn,
 #neuro-wallet-wrapper .ant-btn-primary,
 #neuro-wallet-wrapper button,
 .wallet-selector-button {
-  background-color: var(--accent) !important;
-  color: black !important;
-  border-radius: 0.75rem !important;
-  font-weight: 700 !important;
-  border: none !important;
   width: 100% !important;
-  height: 3.5rem !important; /* Slightly larger for premium feel */
+  height: 3rem !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 0.5rem !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  box-shadow: 0 4px 10px rgba(34, 197, 94, 0.2) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  font-size: 0.85rem !important;
+  border: 0 !important;
+  border-radius: 0.5rem !important;
+  background-color: var(--accent) !important;
+  color: white !important;
+  font-size: 0.82rem !important;
+  font-weight: 800 !important;
+  transition: background-color 0.2s ease, transform 0.2s ease !important;
 }
 
 #neuro-wallet-wrapper .ant-btn:hover,
 #neuro-wallet-wrapper button:hover,
 .wallet-selector-button:hover {
-  filter: brightness(1.1) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4) !important;
+  background-color: #00a8a0 !important;
+  transform: translateY(-1px) !important;
 }
 
-/* Ensure icons/text inside the button inherit the color correctly */
 #neuro-wallet-wrapper .ant-btn *,
 #neuro-wallet-wrapper button * {
-  color: black !important;
-  font-weight: 700 !important;
+  color: white !important;
+  font-weight: 800 !important;
 }
 
-/* Modal and list styling for better integration with NeuroBase theme */
 .ant-modal-mask {
-  backdrop-filter: blur(8px) !important;
+  backdrop-filter: blur(10px) !important;
 }
 
 .ant-modal-content {
-  background-color: #050807 !important; /* Extremely dark black-green */
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: #10201f !important;
+  border: 1px solid rgba(247, 248, 245, 0.12) !important;
   color: white !important;
-  border-radius: 12px !important;
+  border-radius: 0.5rem !important;
 }
 
 .ant-modal-header {
   background-color: transparent !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-bottom: 1px solid rgba(247, 248, 245, 0.08) !important;
   padding: 20px !important;
 }
 
 .ant-modal-title {
-  color: var(--accent) !important;
-  font-weight: 800 !important;
-  font-size: 1.4rem !important;
+  color: var(--accent-bright) !important;
+  font-size: 1.25rem !important;
+  font-weight: 900 !important;
   text-align: center !important;
 }
 
-/* Connect buttons are usually primary */
 .ant-modal-content .ant-btn-primary {
   background-color: var(--accent) !important;
-  color: black !important;
+  color: white !important;
   border: none !important;
-  font-weight: 700 !important;
-  transition: all 0.2s ease !important;
+  font-weight: 800 !important;
 }
 
-/* Social buttons are usually default */
 .ant-modal-content .ant-btn-default {
-  background-color: white !important;
-  color: black !important;
-  border: none !important;
-  font-weight: 600 !important;
   margin-bottom: 8px !important;
+  border: none !important;
+  background-color: white !important;
+  color: #10201f !important;
+  font-weight: 700 !important;
 }
 
-/* General text inside Modal */
 .ant-modal-content .ant-list-item-meta-title,
 .ant-modal-content .ant-list-item-meta-description,
 .ant-modal-content .ant-typography,
@@ -144,25 +183,23 @@ body {
   color: white !important;
 }
 
-/* Links like "Learn more about Petra Web" */
 .ant-modal-content .ant-btn-link,
 .ant-modal-content a {
-  color: var(--accent) !important;
   background: transparent !important;
+  color: var(--accent-bright) !important;
 }
 
 .ant-list-item {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-  padding: 12px 16px !important;
+  border-bottom: 1px solid rgba(247, 248, 245, 0.08) !important;
   background: transparent !important;
+  padding: 12px 16px !important;
 }
 
 .ant-list-item:hover {
-  background-color: rgba(34, 197, 94, 0.05) !important;
+  background-color: rgba(46, 233, 220, 0.06) !important;
 }
 
-/* Divider "Or" */
 .ant-divider-inner-text {
-  color: rgba(255, 255, 255, 0.4) !important;
   background-color: transparent !important;
+  color: rgba(247, 248, 245, 0.48) !important;
 }

@@ -7,8 +7,13 @@ import { Providers } from "@/components/Providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "NeuroBase | Verifiable AI Memory",
-  description: "Monetize your personal AI knowledge base on Shelby Protocol",
+  title: "NeuroBase | Verifiable AI Memory Layer",
+  description: "Store, price, and recall AI knowledge through Shelby, Aptos, and MCP.",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/neurobase_logo-removebg-preview.png",
+  },
 };
 
 export default function RootLayout({
