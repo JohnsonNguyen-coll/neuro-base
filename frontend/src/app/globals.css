@@ -1,14 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #081817;
-  --foreground: #f7f8f5;
-  --surface: #10201f;
-  --surface-soft: #172c2a;
-  --accent: #008f8a;
-  --accent-bright: #2ee9dc;
-  --warning: #f4b95a;
-  --muted: #91a5a1;
+  --background: #0a0a0b;
+  --foreground: #f2f2f5;
+  --surface: #0d0d10;
+  --surface-soft: #141419;
+  --accent: #7b5cfa;
+  --accent-deep: #4c2fcb;
+  --accent-cyan: #5ee7df;
+  --muted: #9a9aa5;
+  --hairline: rgba(255, 255, 255, 0.08);
 }
 
 * {
@@ -25,6 +26,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: "Inter", sans-serif;
+  text-rendering: geometricPrecision;
 }
 
 button,
@@ -37,15 +39,15 @@ select {
 
 @layer components {
   .glass-card {
-    background: rgba(16, 32, 31, 0.78);
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(18px);
-    border: 1px solid rgba(247, 248, 245, 0.1);
-    border-radius: 0.5rem;
-    box-shadow: 0 20px 48px -28px rgba(0, 0, 0, 0.85);
+    border: 1px solid var(--hairline);
+    border-radius: 0.625rem;
+    box-shadow: 0 0 0 1px rgba(123, 92, 250, 0.02), 0 24px 60px -36px rgba(123, 92, 250, 0.48);
   }
 
   .accent-text {
-    color: var(--accent-bright);
+    color: var(--accent-cyan);
   }
 
   .neuro-btn {
@@ -54,19 +56,19 @@ select {
     justify-content: center;
     gap: 0.5rem;
     min-height: 3rem;
-    border-radius: 0.5rem;
-    background-color: var(--accent);
+    border-radius: 0.625rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent-deep));
     color: white;
     padding: 0.75rem 1.35rem;
     font-weight: 800;
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 14px 32px rgba(0, 143, 138, 0.22);
+    transition: transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease;
+    box-shadow: 0 14px 34px rgba(123, 92, 250, 0.24);
   }
 
   .neuro-btn:hover {
-    background-color: #00a8a0;
-    transform: translateY(-1px);
-    box-shadow: 0 18px 36px rgba(0, 143, 138, 0.3);
+    filter: brightness(1.07);
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 0 18px 44px rgba(123, 92, 250, 0.36);
   }
 
   .neuro-btn-small {
@@ -75,9 +77,9 @@ select {
     align-items: center;
     justify-content: center;
     gap: 0.45rem;
-    border-radius: 0.5rem;
-    background: rgba(46, 233, 220, 0.12);
-    color: var(--accent-bright);
+    border-radius: 0.625rem;
+    background: rgba(123, 92, 250, 0.14);
+    color: #ddd7ff;
     padding: 0.55rem 0.9rem;
     font-size: 0.78rem;
     font-weight: 900;
@@ -85,8 +87,9 @@ select {
   }
 
   .neuro-btn-small:hover {
-    background: var(--accent-bright);
-    color: #061211;
+    background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+    color: white;
+    box-shadow: 0 12px 28px rgba(123, 92, 250, 0.24);
   }
 }
 
@@ -95,13 +98,25 @@ select {
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(145deg, rgba(8, 24, 23, 0.98), rgba(16, 32, 31, 0.98)),
-    radial-gradient(circle at 18% 12%, rgba(46, 233, 220, 0.12), transparent 32%),
-    radial-gradient(circle at 78% 8%, rgba(244, 185, 90, 0.1), transparent 28%);
+    radial-gradient(circle at 18% 16%, rgba(123, 92, 250, 0.18), transparent 30%),
+    radial-gradient(circle at 82% 10%, rgba(94, 231, 223, 0.09), transparent 28%),
+    linear-gradient(145deg, #0a0a0b, #0d0d10 48%, #0a0a0b);
+}
+
+.bg-mesh::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at 50% 20%, black, transparent 70%);
 }
 
 .landing-shell {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 /* Wallet Selector Overrides */
@@ -116,8 +131,8 @@ select {
   justify-content: center !important;
   gap: 0.5rem !important;
   border: 0 !important;
-  border-radius: 0.5rem !important;
-  background-color: var(--accent) !important;
+  border-radius: 0.625rem !important;
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep)) !important;
   color: white !important;
   font-size: 0.82rem !important;
   font-weight: 800 !important;
@@ -127,7 +142,7 @@ select {
 #neuro-wallet-wrapper .ant-btn:hover,
 #neuro-wallet-wrapper button:hover,
 .wallet-selector-button:hover {
-  background-color: #00a8a0 !important;
+  filter: brightness(1.08) !important;
   transform: translateY(-1px) !important;
 }
 
@@ -142,10 +157,10 @@ select {
 }
 
 .ant-modal-content {
-  background-color: #10201f !important;
-  border: 1px solid rgba(247, 248, 245, 0.12) !important;
+  background-color: #0d0d10 !important;
+  border: 1px solid var(--hairline) !important;
   color: white !important;
-  border-radius: 0.5rem !important;
+  border-radius: 0.625rem !important;
 }
 
 .ant-modal-header {
@@ -155,14 +170,14 @@ select {
 }
 
 .ant-modal-title {
-  color: var(--accent-bright) !important;
+  color: var(--accent-cyan) !important;
   font-size: 1.25rem !important;
   font-weight: 900 !important;
   text-align: center !important;
 }
 
 .ant-modal-content .ant-btn-primary {
-  background-color: var(--accent) !important;
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep)) !important;
   color: white !important;
   border: none !important;
   font-weight: 800 !important;
@@ -172,7 +187,7 @@ select {
   margin-bottom: 8px !important;
   border: none !important;
   background-color: white !important;
-  color: #10201f !important;
+  color: #0d0d10 !important;
   font-weight: 700 !important;
 }
 
@@ -186,7 +201,7 @@ select {
 .ant-modal-content .ant-btn-link,
 .ant-modal-content a {
   background: transparent !important;
-  color: var(--accent-bright) !important;
+  color: var(--accent-cyan) !important;
 }
 
 .ant-list-item {
@@ -196,7 +211,7 @@ select {
 }
 
 .ant-list-item:hover {
-  background-color: rgba(46, 233, 220, 0.06) !important;
+  background-color: rgba(123, 92, 250, 0.08) !important;
 }
 
 .ant-divider-inner-text {

@@ -1,137 +1,143 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { Brain, ArrowLeft, BookOpen, Layers, Zap, ShieldCheck, FileJson, Link as LinkIcon, Database } from "lucide-react";
+import {
+  ArrowLeft,
+  BookOpen,
+  Braces,
+  Database,
+  FileJson,
+  Layers,
+  Zap,
+} from "lucide-react";
+
+const concepts = [
+  {
+    title: "Verifiable Memory Blobs",
+    copy: "User files are erasure-coded and written to decentralized Shelby nodes instead of a centralized application database.",
+    icon: Database,
+  },
+  {
+    title: "MCP Access Boundary",
+    copy: "Agents retrieve context through a narrow tool interface, keeping memory access explicit and auditable.",
+    icon: Braces,
+  },
+];
+
+const steps = [
+  {
+    title: "Upload and Commit",
+    copy: "The web app generates erasure-coding commitments and registers a blob reference on Shelby L1.",
+  },
+  {
+    title: "Register Marketplace Metadata",
+    copy: "The NeuroBase registry records the knowledge pack reference, owner, and access pricing signal.",
+  },
+  {
+    title: "Agent Query and Payment",
+    copy: "An approved agent signs the transaction path and recalls the memory through the MCP-compatible layer.",
+  },
+];
 
 export default function DocsPage() {
   return (
-    <div className="min-h-screen bg-black/95 text-white animate-in fade-in duration-700">
-      {/* Background Effects */}
-      <div className="fixed top-[-10%] left-[-10%] w-[40rem] h-[40rem] bg-green-500/10 rounded-full blur-[150px] -z-10"></div>
-      
-      {/* Header */}
-      <header className="fixed top-0 w-full border-b border-white/10 bg-black/50 backdrop-blur-xl z-50">
-        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-             <div className="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center">
-               <Brain className="text-white w-6 h-6" />
-             </div>
-             <h1 className="text-xl font-bold tracking-tighter">Neuro<span className="text-green-500">Base</span> Docs</h1>
+    <div className="min-h-screen bg-[#0A0A0B] text-[#F2F2F5] animate-in fade-in duration-700">
+      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_16%_8%,rgba(123,92,250,0.18),transparent_30%),radial-gradient(circle_at_82%_12%,rgba(94,231,223,0.08),transparent_28%),linear-gradient(135deg,#0A0A0B,#0D0D10)]" />
+      <div className="fixed inset-0 -z-10 opacity-[0.12] [background-image:linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:56px_56px]" />
+
+      <header className="fixed top-0 z-50 w-full border-b border-white/[0.08] bg-[#0A0A0B]/72 backdrop-blur-xl">
+        <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-white/[0.08] bg-white/[0.03]">
+              <Image src="/neurobase_logo-removebg-preview.png" alt="" width={32} height={32} priority />
+            </div>
+            <h1 className="text-lg font-semibold tracking-[-0.03em]">NeuroBase Docs</h1>
           </div>
-          <Link href="/" className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-white transition-colors">
+          <Link href="/" className="flex items-center gap-2 text-sm font-semibold text-[#9A9AA5] transition-colors hover:text-[#F2F2F5]">
             <ArrowLeft size={16} /> Back to Home
           </Link>
         </div>
       </header>
 
-      {/* Docs Content */}
-      <main className="pt-32 pb-24 max-w-4xl mx-auto px-6 space-y-16">
-        
-        {/* Intro */}
+      <main className="mx-auto max-w-4xl space-y-16 px-6 pb-24 pt-32">
         <section className="space-y-6">
-           <div className="inline-flex items-center gap-2 text-green-400 font-bold tracking-tighter capitalize text-xs bg-green-500/10 px-3 py-1.5 rounded-full border border-green-500/20">
-              <BookOpen size={14} /> Documentation & Technical Overview
-           </div>
-           <h2 className="text-4xl md:text-5xl font-black tracking-tighter">Introduction to NeuroBase</h2>
-           <p className="text-xl text-gray-400 leading-relaxed max-w-2xl font-medium">
-             NeuroBase is a decentralized cognitive asset marketplace and storage layer, built on top of the 
-             <span className="text-white font-bold ml-1">Shelby Protocol</span> and 
-             <span className="text-white font-bold ml-1">Aptos Blockchain</span>.
-           </p>
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-[#5EE7DF]">
+            <BookOpen size={14} /> Technical Overview
+          </div>
+          <h2 className="text-4xl font-semibold tracking-[-0.055em] md:text-5xl">NeuroBase protocol notes</h2>
+          <p className="max-w-2xl text-xl font-light leading-[1.7] text-[#9A9AA5]">
+            NeuroBase is a decentralized cognitive asset marketplace and storage layer built around Shelby Protocol, Aptos references, and MCP-compatible retrieval.
+          </p>
         </section>
 
-        <hr className="border-white/10" />
-
-        {/* Core Concepts */}
-        <section className="space-y-10">
-           <h3 className="text-3xl font-bold tracking-tighter flex items-center gap-3">
-              <Layers className="text-green-500" /> Core Concepts
-           </h3>
-           
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="glass-card p-8 border border-white/10 space-y-4 hover:border-green-500/50 transition-colors">
-                 <Database className="w-8 h-8 text-green-400" />
-                 <h4 className="text-xl font-bold">Verifiable Memory Blobs</h4>
-                 <p className="text-gray-400 text-sm leading-relaxed">
-                   Instead of relying on centralized databases (AWS, GCP), user files (JSON, PDF, Text) are erasure-coded and written to decentralised nodes via Shelby Protocol. This makes your AI memory fault-tolerant and censorship-resistant.
-                 </p>
+        <section className="space-y-8 border-t border-white/[0.08] pt-12">
+          <h3 className="flex items-center gap-3 text-3xl font-semibold tracking-[-0.04em]">
+            <Layers className="text-[#5EE7DF]" /> Core Concepts
+          </h3>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {concepts.map((concept) => (
+              <div key={concept.title} className="glass-card space-y-4 p-8 transition-colors hover:border-[#7B5CFA]/35">
+                <concept.icon className="h-8 w-8 text-[#5EE7DF]" strokeWidth={1.8} />
+                <h4 className="text-xl font-semibold tracking-[-0.025em]">{concept.title}</h4>
+                <p className="text-sm font-light leading-[1.7] text-[#9A9AA5]">{concept.copy}</p>
               </div>
-              <div className="glass-card p-8 border border-white/10 space-y-4 hover:border-blue-500/50 transition-colors">
-                 <LinkIcon className="w-8 h-8 text-blue-400" />
-                 <h4 className="text-xl font-bold">MCP Layer (Model Context Protocol)</h4>
-                 <p className="text-gray-400 text-sm leading-relaxed">
-                   NeuroBase natively supports Anthropic's emerging MCP standard. AI agents can seamlessly "hook" into your decentralized brain and retrieve specific context only when an on-chain payment is completed.
-                 </p>
-              </div>
-           </div>
+            ))}
+          </div>
         </section>
 
-        {/* Workflow */}
         <section className="space-y-8">
-           <h3 className="text-3xl font-bold tracking-tighter flex items-center gap-3">
-              <Zap className="text-yellow-500" /> The Workflow
-           </h3>
-           <div className="glass-card p-8 border border-white/10">
-              <ol className="space-y-8 relative before:absolute before:inset-y-0 before:left-4 before:w-0.5 before:bg-white/10">
-                 <li className="relative pl-12">
-                    <div className="absolute left-0 w-8 h-8 bg-black border-2 border-green-500 rounded-full flex items-center justify-center text-xs font-bold text-green-500 z-10">1</div>
-                    <h4 className="text-lg font-bold mb-2">Upload & Commit</h4>
-                    <p className="text-gray-400 text-sm leading-relaxed">A user uploads an expertise file (e.g. `trading_strategies.json`). The web app generates an erasure-coding commitment and registers the Blob Merkle Root on Aptos (Shelby L1).</p>
-                 </li>
-                 <li className="relative pl-12">
-                    <div className="absolute left-0 w-8 h-8 bg-black border-2 border-green-500 rounded-full flex items-center justify-center text-xs font-bold text-green-500 z-10">2</div>
-                    <h4 className="text-lg font-bold mb-2">Marketplace Registration</h4>
-                    <p className="text-gray-400 text-sm leading-relaxed">The file is registered on the NeuroBase `Registry` smart contract, assigning a query price (e.g., 0.1 APT / Read).</p>
-                 </li>
-                 <li className="relative pl-12">
-                    <div className="absolute left-0 w-8 h-8 bg-black border-2 border-green-500 rounded-full flex items-center justify-center text-xs font-bold text-green-500 z-10">3</div>
-                    <h4 className="text-lg font-bold mb-2">Agent Query & Payment</h4>
-                    <p className="text-gray-400 text-sm leading-relaxed">An Agent discovers the Knowledge Pack on the Marketplace, signs a Move Transfer transaction via the SDK, and decrypts the memory natively into its context window.</p>
-                 </li>
-              </ol>
-           </div>
+          <h3 className="flex items-center gap-3 text-3xl font-semibold tracking-[-0.04em]">
+            <Zap className="text-[#C8BEFF]" /> Workflow
+          </h3>
+          <div className="glass-card p-8">
+            <ol className="relative space-y-8 before:absolute before:inset-y-0 before:left-4 before:w-px before:bg-white/[0.08]">
+              {steps.map((step, index) => (
+                <li key={step.title} className="relative pl-12">
+                  <div className="absolute left-0 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-[#7B5CFA]/45 bg-[#0D0D10] font-mono text-xs font-semibold text-[#C8BEFF]">
+                    {index + 1}
+                  </div>
+                  <h4 className="mb-2 text-lg font-semibold tracking-[-0.025em]">{step.title}</h4>
+                  <p className="text-sm font-light leading-[1.7] text-[#9A9AA5]">{step.copy}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </section>
 
-        {/* API Reference */}
         <section className="space-y-8">
-           <h3 className="text-3xl font-bold tracking-tighter flex items-center gap-3">
-              <FileJson className="text-purple-500" /> MCP Toolkit (For Bots)
-           </h3>
-           <p className="text-gray-400 font-medium">Any compliant AI bot can utilize the NeuroBase MCP API:</p>
-           
-           <div className="bg-black border border-white/10 rounded-2xl overflow-hidden font-mono text-sm">
-              <div className="bg-white/5 px-4 py-2 border-b border-white/10 text-gray-400 flex justify-between">
-                <span>POST /api/mcp/query</span>
-                <span>TypeScript Interface</span>
-              </div>
-              <pre className="p-6 text-green-400/90 overflow-x-auto leading-relaxed">
-{`interface MCPQueryRequest {
-  agent_id: string;
-  blob_id: string;
-  signature: string; // Payload signed with Agent's Aptos Wallet
-  query_context: string;
-}
+          <h3 className="flex items-center gap-3 text-3xl font-semibold tracking-[-0.04em]">
+            <FileJson className="text-[#7B5CFA]" /> MCP Toolkit
+          </h3>
+          <p className="font-light leading-[1.7] text-[#9A9AA5]">Any compliant AI bot can use the NeuroBase MCP interface:</p>
+          <div className="overflow-hidden rounded-[10px] border border-white/[0.08] bg-[#0D0D10] font-mono text-sm">
+            <div className="flex justify-between border-b border-white/[0.08] bg-white/[0.03] px-4 py-2 text-[#9A9AA5]">
+              <span>mcp.call</span>
+              <span>TypeScript shape</span>
+            </div>
+            <pre className="overflow-x-auto p-6 leading-[1.7] text-[#5EE7DF]/90">
+{`type RecallMemoryRequest = {
+  blobName: string;
+  ownerAddress: string;
+};
 
-// Response
-{
-  "status": "success",
-  "tx_hash": "0xabc...",
-  "data": "Decrypted contents of the memory blob..."
-}`}
-              </pre>
-           </div>
+type RecallMemoryResponse = {
+  status: "success";
+  memoryId: string;
+  content: string;
+};`}
+            </pre>
+          </div>
         </section>
 
-        {/* Footer actions */}
-        <section className="pt-8 border-t border-white/10 flex items-center justify-between">
-            <Link href="/dashboard" className="neuro-btn px-8 py-4 font-bold tracking-widest text-sm flex items-center gap-2">
-               Try NeuroBase Now <ArrowLeft className="rotate-180 w-4 h-4" />
-            </Link>
-            <a href="https://github.com/JohnsonNguyen-coll/neuro-base" target="_blank" className="text-gray-500 hover:text-white transition-colors font-bold text-sm tracking-widest">
-               View on GitHub
-            </a>
+        <section className="flex items-center justify-between border-t border-white/[0.08] pt-8">
+          <Link href="/dashboard" className="neuro-btn px-8 py-4 text-sm font-semibold">
+            Open Dashboard <ArrowLeft className="h-4 w-4 rotate-180" />
+          </Link>
+          <a href="https://github.com/JohnsonNguyen-coll/neuro-base" target="_blank" className="text-sm font-semibold text-[#9A9AA5] transition-colors hover:text-[#F2F2F5]">
+            View on GitHub
+          </a>
         </section>
-        
       </main>
     </div>
   );

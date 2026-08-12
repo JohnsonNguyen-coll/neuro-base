@@ -368,27 +368,27 @@ export default function Home() {
     <div className="space-y-12 animate-in fade-in duration-700">
       {/* Welcome & Global Stats */}
       <header className="space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold capitalize tracking-wider mb-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] text-[#5EE7DF] font-mono text-[11px] font-semibold uppercase tracking-[0.2em] mb-2">
            <Zap size={14} className="animate-pulse" /> Live on Shelbynet
         </div>
-        <h2 className="text-5xl font-black tracking-tighter leading-tight">
-            Neuro<span className="text-green-500">Base</span> Dashboard
+        <h2 className="text-5xl font-semibold tracking-[-0.055em] leading-tight text-[#F2F2F5]">
+            Secure Memory Dashboard
         </h2>
-        <p className="text-gray-400 max-w-2xl text-lg font-medium">Your decentralized mind, stored on Shelby and verifiable on-chain.</p>
+        <p className="text-[#9A9AA5] max-w-2xl text-lg font-light leading-[1.7]">Your decentralized memory surface, stored on Shelby and verifiable on-chain.</p>
       </header>
 
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {stats.map((stat) => (
           <div key={stat.name} className="glass-card p-6 overflow-hidden relative group transition-all hover:-translate-y-1">
              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-400">
+                <div className="w-12 h-12 rounded-[10px] bg-white/[0.035] border border-white/[0.08] flex items-center justify-center text-[#5EE7DF]">
                   <stat.icon size={24} />
                 </div>
-                <span className="text-[10px] font-black text-green-400 border border-green-500/30 px-2 py-1 rounded capitalize tracking-widest">{stat.change}</span>
+                <span className="font-mono text-[10px] font-semibold text-[#C8BEFF] border border-[#7B5CFA]/30 px-2 py-1 rounded capitalize tracking-widest">{stat.change}</span>
              </div>
              <div>
-                <p className="text-xs text-gray-500 font-bold capitalize tracking-widest mb-1">{stat.name}</p>
-                <h3 className="text-3xl font-black text-white">{stat.value}</h3>
+                <p className="font-mono text-[10px] text-[#696974] font-semibold uppercase tracking-[0.18em] mb-1">{stat.name}</p>
+                <h3 className="text-3xl font-semibold tracking-[-0.035em] text-[#F2F2F5]">{stat.value}</h3>
              </div>
           </div>
         ))}
@@ -406,14 +406,14 @@ export default function Home() {
            <div className="space-y-4">
              {loading && <div className="text-center p-4">Loading real memories from Shelbynet...</div>}
              {currentMemories.map((memory: any, index: number) => (
-               <div key={`${memory.id}-${index}`} className="glass-card p-5 flex items-center justify-between hover:bg-white/5 border border-white/5 hover:border-green-500/30 transition-all cursor-pointer group">
+               <div key={`${memory.id}-${index}`} className="glass-card p-5 flex items-center justify-between hover:bg-white/[0.045] border border-white/[0.08] hover:border-[#7B5CFA]/35 transition-all cursor-pointer group">
                   <div className="flex items-center gap-5 flex-1 min-w-0 pr-4">
-                     <div className="w-12 h-12 shrink-0 rounded-full bg-green-500/5 flex items-center justify-center text-green-500 group-hover:bg-green-500 group-hover:text-white transition-all">
+                     <div className="w-12 h-12 shrink-0 rounded-full bg-[#7B5CFA]/10 flex items-center justify-center text-[#5EE7DF] group-hover:bg-[#7B5CFA] group-hover:text-white transition-all">
                         <Database size={20} />
                      </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-lg font-bold text-white tracking-tight truncate">{memory.name}</h4>
-                        <p className="text-xs text-gray-400 flex items-center gap-2 truncate">
+                        <h4 className="text-lg font-semibold text-[#F2F2F5] tracking-[-0.025em] truncate">{memory.name}</h4>
+                        <p className="text-xs text-[#9A9AA5] flex items-center gap-2 truncate">
                            Owner: {String(memory.owner).slice(0,6)}...{String(memory.owner).slice(-4)} 
                            <span className="w-1 h-1 rounded-full bg-gray-600"></span>
                            Decentralized <span className="w-1 h-1 rounded-full bg-gray-600"></span> 
@@ -423,10 +423,10 @@ export default function Home() {
                   </div>
                   <div className="flex items-center gap-6">
                      <div className="text-right sr-only md:not-sr-only">
-                        <p className="text-[10px] text-gray-500 capitalize font-bold tracking-widest">Price</p>
-                        <p className="font-black text-green-400 tracking-tighter">{memory.price}</p>
+                        <p className="font-mono text-[10px] text-[#696974] uppercase font-semibold tracking-widest">Price</p>
+                        <p className="font-semibold text-[#C8BEFF] tracking-tight">{memory.price}</p>
                      </div>
-                     <button onClick={() => handleRecall(memory)} className="neuro-btn-small flex items-center gap-2 capitalize cursor-pointer hover:bg-green-400">
+                     <button onClick={() => handleRecall(memory)} className="neuro-btn-small flex items-center gap-2 capitalize cursor-pointer">
                         Recall <ExternalLink size={14} />
                      </button>
                   </div>
@@ -435,7 +435,7 @@ export default function Home() {
 
              {!loading && memories.length === 0 && (
                <div className="p-8 text-center glass-card border-dashed border-white/10 opacity-50 grayscale">
-                  <p className="text-sm font-bold text-gray-500 tracking-widest">No memories uploaded yet...</p>
+                  <p className="font-mono text-xs font-semibold text-[#696974] tracking-[0.18em]">No memories uploaded yet...</p>
                </div>
              )}
 
@@ -467,12 +467,12 @@ export default function Home() {
         {/* Action Sidebar */}
          <div className="space-y-6">
             {!hasRegistry && connected && (
-               <div className="glass-card p-8 border-2 border-green-500/50 bg-green-500/5 text-center space-y-4 animate-pulse">
-                  <div className="w-12 h-12 rounded-full bg-green-500/20 mx-auto flex items-center justify-center text-green-400">
+               <div className="glass-card p-8 border border-[#7B5CFA]/40 bg-[#7B5CFA]/[0.07] text-center space-y-4">
+                  <div className="w-12 h-12 rounded-full bg-[#7B5CFA]/18 mx-auto flex items-center justify-center text-[#C8BEFF]">
                     <Zap size={24} />
                   </div>
-                  <h4 className="text-md font-bold text-white">Setup Required</h4>
-                  <p className="text-xs text-gray-400">You need to initialize your NeuroBase Registry before you can upload memories.</p>
+                  <h4 className="text-md font-semibold text-[#F2F2F5]">Setup Required</h4>
+                  <p className="text-xs text-[#9A9AA5] leading-[1.6]">You need to initialize your NeuroBase Registry before you can upload memories.</p>
                   <button 
                     onClick={handleInitRegistry}
                     disabled={initializing}
@@ -483,12 +483,12 @@ export default function Home() {
                </div>
             )}
 
-            <div className="glass-card p-8 border-dashed border-2 border-green-500/20 text-center space-y-6">
-              <div className="w-16 h-16 rounded-2xl bg-green-500/20 mx-auto flex items-center justify-center text-green-400 mb-2">
+            <div className="glass-card p-8 border-dashed border border-white/[0.10] text-center space-y-6">
+              <div className="w-16 h-16 rounded-[10px] bg-[#7B5CFA]/18 mx-auto flex items-center justify-center text-[#C8BEFF] mb-2">
                 <Upload size={28} />
               </div>
-              <h4 className="text-lg font-black tracking-tighter">Upload Knowledge</h4>
-              <p className="text-sm text-gray-400 font-medium leading-relaxed">Securely store your cognitive assets on the Shelby network.</p>
+              <h4 className="text-lg font-semibold tracking-[-0.025em]">Upload Knowledge</h4>
+              <p className="text-sm text-[#9A9AA5] font-light leading-[1.7]">Securely store your cognitive assets on the Shelby network.</p>
               
               <div className="relative w-full">
                 <input 
@@ -509,18 +509,18 @@ export default function Home() {
 
       {/* Modern Modal Component */}
       {modal.isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="glass-card w-full max-w-md p-8 border-2 border-white/10 shadow-2xl relative animate-in zoom-in-95 duration-300">
-            <div className={`w-16 h-16 rounded-2xl mx-auto flex items-center justify-center mb-6 ${
-              modal.type === "success" ? "bg-green-500/20 text-green-400" : 
-              modal.type === "error" ? "bg-red-500/20 text-red-400" : "bg-blue-500/20 text-blue-400"
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#0A0A0B]/82 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="glass-card w-full max-w-md p-8 border border-white/[0.08] relative animate-in zoom-in-95 duration-300">
+            <div className={`w-16 h-16 rounded-[10px] mx-auto flex items-center justify-center mb-6 ${
+              modal.type === "success" ? "bg-[#7B5CFA]/20 text-[#C8BEFF]" : 
+              modal.type === "error" ? "bg-red-500/20 text-red-300" : "bg-[#5EE7DF]/12 text-[#5EE7DF]"
             }`}>
               {modal.type === "success" && <Zap size={32} />}
               {modal.type === "error" && <Shield size={32} />}
               {modal.type === "info" && <Brain size={32} />}
             </div>
-            <h3 className="text-2xl font-black text-center mb-2 tracking-tighter">{modal.title}</h3>
-            <p className="text-gray-400 text-center font-medium leading-relaxed mb-8">{modal.message}</p>
+            <h3 className="text-2xl font-semibold text-center mb-2 tracking-[-0.035em]">{modal.title}</h3>
+            <p className="text-[#9A9AA5] text-center font-light leading-[1.7] mb-8">{modal.message}</p>
             <button 
               onClick={() => setModal({ ...modal, isOpen: false })}
               className="neuro-btn w-full py-4 text-xs font-black tracking-widest uppercase transition-transform active:scale-95"

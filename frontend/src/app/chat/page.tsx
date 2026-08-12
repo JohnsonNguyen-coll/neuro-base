@@ -55,25 +55,25 @@ export default function LiveChat() {
   return (
     <div className="space-y-6 animate-in fade-in duration-700 h-[calc(100vh-80px)] flex flex-col">
       <header className="space-y-2 shrink-0">
-        <div className="flex items-center gap-2 text-green-400 font-bold tracking-tighter capitalize text-xs">
+        <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-[0.22em] text-[#5EE7DF]">
           <Zap size={14} /> AI Interaction Layer
         </div>
-        <h2 className="text-3xl font-extrabold tracking-tight">Personal <span className="text-green-500">Live Chat</span></h2>
-        <p className="text-gray-400 text-sm max-w-xl">
+        <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[#F2F2F5]">Secure Agent Session</h2>
+        <p className="text-[#9A9AA5] text-sm max-w-xl leading-[1.7]">
           Test your memory packs. This AI Agent relies on Model Context Protocol (MCP) to read your uploaded decentralized data on the fly.
         </p>
-        <p className="text-xs font-semibold leading-5 text-amber-300/90">
+        <p className="text-xs font-medium leading-5 text-[#C8BEFF]">
           Demo mode: MCP retrieval is prepared, but live AI responses require a configured model API key before production use.
         </p>
       </header>
 
       {/* Chat Container */}
-      <div className="flex-1 glass-card border border-white/5 rounded-2xl flex flex-col overflow-hidden relative">
+      <div className="flex-1 glass-card border border-white/[0.08] rounded-[10px] flex flex-col overflow-hidden relative">
          {!connected && (
-           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center p-8 text-center border-2 border-dashed border-white/10 m-4 rounded-xl">
-              <Lock size={48} className="text-gray-500 mb-6" />
-              <h3 className="text-2xl font-black mb-2">Wallet Disconnected</h3>
-              <p className="text-gray-400 font-medium">Please connect your Aptos wallet via the sidebar to access your secure AI interaction layer.</p>
+           <div className="absolute inset-0 bg-[#0A0A0B]/82 backdrop-blur-sm z-20 flex flex-col items-center justify-center p-8 text-center border border-dashed border-white/[0.08] m-4 rounded-[10px]">
+              <Lock size={48} className="text-[#7B5CFA] mb-6" strokeWidth={1.7} />
+              <h3 className="text-2xl font-semibold tracking-[-0.035em] mb-2">Wallet Disconnected</h3>
+              <p className="text-[#9A9AA5] font-light leading-[1.7]">Please connect your Aptos wallet via the sidebar to access your secure AI interaction layer.</p>
            </div>
          )}
 
@@ -82,15 +82,15 @@ export default function LiveChat() {
             {messages.map((msg) => (
                <div key={msg.id} className={`flex gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
                   <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center border ${
-                     msg.role === 'user' ? 'bg-green-500/20 border-green-500/50 text-green-400' : 'bg-white/5 border-white/10 text-white'
+                     msg.role === 'user' ? 'bg-[#7B5CFA]/15 border-[#7B5CFA]/35 text-[#C8BEFF]' : 'bg-white/[0.035] border-white/[0.08] text-[#F2F2F5]'
                   }`}>
                      {msg.role === 'user' ? <User size={20} /> : <Bot size={20} />}
                   </div>
                   
-                  <div className={`max-w-[75%] p-4 rounded-2xl text-sm leading-relaxed ${
+                  <div className={`max-w-[75%] p-4 rounded-[10px] text-sm leading-[1.65] ${
                      msg.role === 'user' 
-                       ? 'bg-green-500 text-black font-medium rounded-tr-sm' 
-                       : 'bg-white/5 border border-white/10 text-gray-300 rounded-tl-sm'
+                       ? 'bg-gradient-to-r from-[#7B5CFA] to-[#4C2FCB] text-white font-medium rounded-tr-sm' 
+                       : 'bg-white/[0.035] border border-white/[0.08] text-[#D7D7DE] rounded-tl-sm'
                   }`}>
                      {msg.content}
                   </div>
@@ -100,13 +100,13 @@ export default function LiveChat() {
             {/* Typing Indicator */}
             {isTyping && (
                <div className="flex gap-4">
-                  <div className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center">
+                  <div className="w-10 h-10 shrink-0 rounded-full bg-white/[0.035] border border-white/[0.08] text-[#F2F2F5] flex items-center justify-center">
                      <Bot size={20} />
                   </div>
-                  <div className="px-5 py-4 rounded-2xl bg-white/5 border border-white/10 rounded-tl-sm flex items-center gap-2">
-                     <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                     <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-.3s]"></div>
-                     <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-.5s]"></div>
+                  <div className="px-5 py-4 rounded-[10px] bg-white/[0.035] border border-white/[0.08] rounded-tl-sm flex items-center gap-2">
+                     <div className="w-2 h-2 bg-[#5EE7DF] rounded-full animate-bounce"></div>
+                     <div className="w-2 h-2 bg-[#7B5CFA] rounded-full animate-bounce [animation-delay:-.3s]"></div>
+                     <div className="w-2 h-2 bg-[#5EE7DF] rounded-full animate-bounce [animation-delay:-.5s]"></div>
                   </div>
                </div>
             )}
@@ -114,7 +114,7 @@ export default function LiveChat() {
          </div>
 
          {/* Input Area */}
-         <div className="p-4 border-t border-white/5 shrink-0 bg-black/40">
+         <div className="p-4 border-t border-white/[0.08] shrink-0 bg-[#0A0A0B]/62">
             <div className="relative flex items-center">
                <input 
                   type="text" 
@@ -123,24 +123,24 @@ export default function LiveChat() {
                   onKeyDown={handleKeyDown}
                   placeholder="Ask your AI to decrypt and read your mind..." 
                   disabled={!connected || isTyping}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-5 pr-32 py-4 text-white placeholder-gray-500 outline-none focus:border-green-500/50 focus:bg-white/10 transition-all font-medium disabled:opacity-50"
+                  className="w-full bg-white/[0.035] border border-white/[0.08] rounded-[10px] pl-5 pr-32 py-4 text-[#F2F2F5] placeholder-[#696974] outline-none focus:border-[#7B5CFA]/55 focus:ring-2 focus:ring-[#7B5CFA]/20 focus:bg-white/[0.055] transition-all font-medium disabled:opacity-50"
                />
                <div className="absolute right-2 flex items-center gap-2">
-                  <button className="p-2 text-gray-400 hover:text-white transition-colors" title="Tool Settings">
+                  <button className="p-2 text-[#9A9AA5] hover:text-[#F2F2F5] transition-colors" title="Tool Settings">
                      <MoreHorizontal size={20} />
                   </button>
                   <button 
                     onClick={handleSend}
                     disabled={!connected || isTyping || !input.trim()}
-                    className="p-2 bg-green-500 hover:bg-green-400 text-black rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="p-2 bg-gradient-to-r from-[#7B5CFA] to-[#4C2FCB] text-white rounded-[8px] disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.03] hover:shadow-[0_0_24px_rgba(123,92,250,0.35)]"
                   >
                      <Send size={18} />
                   </button>
                </div>
             </div>
             <div className="text-center mt-3">
-               <p className="text-[10px] uppercase tracking-widest text-gray-600 font-bold">
-                 MCP-ready local chat <span className="text-amber-300">&bull; Live model API key not configured</span>
+               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#696974] font-semibold">
+                 MCP-ready local chat <span className="text-[#C8BEFF]">&bull; Live model API key not configured</span>
                </p>
             </div>
          </div>

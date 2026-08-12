@@ -6,73 +6,80 @@ import {
   ArrowRight,
   BadgeCheck,
   Braces,
-  ChevronRight,
+  Cpu,
   DatabaseZap,
+  Fingerprint,
+  KeyRound,
   LockKeyhole,
-  Network,
   ShieldCheck,
   WalletCards,
 } from "lucide-react";
 
 const navItems = [
-  { label: "Platform", href: "#platform" },
+  { label: "Protocol", href: "#protocol" },
   { label: "Workflow", href: "#workflow" },
-  { label: "Security", href: "#security" },
+  { label: "Trust", href: "#trust" },
   { label: "Docs", href: "/docs" },
 ];
 
 const metrics = [
-  { value: "MCP", label: "Agent-ready access layer" },
-  { value: "Shelby", label: "Decentralized blob storage" },
-  { value: "APT", label: "On-chain settlement path" },
+  { value: "MCP", label: "Agent retrieval interface" },
+  { value: "Shelby", label: "Encrypted blob storage" },
+  { value: "Aptos", label: "Verifiable settlement rail" },
 ];
 
-const platformCards = [
+const protocolCards = [
   {
-    title: "Memory Storage",
-    copy: "Package files, notes, prompts, datasets, and personal knowledge into verifiable Shelby blobs.",
+    title: "Private Memory Layer",
+    copy: "Package prompts, files, notes, and domain knowledge into controlled memory objects for AI agents.",
     icon: DatabaseZap,
   },
   {
-    title: "Agent Retrieval",
-    copy: "Expose selected memory through an MCP server so AI clients can recall approved context on demand.",
+    title: "MCP Access Surface",
+    copy: "Expose selected memory through a structured tool boundary instead of broad, unaudited context sharing.",
     icon: Braces,
   },
   {
-    title: "Ownership Rail",
-    copy: "Track access references and pricing signals through Aptos-compatible on-chain metadata.",
+    title: "On-Chain References",
+    copy: "Register access metadata and pricing references through an Aptos-compatible contract path.",
     icon: WalletCards,
   },
 ];
 
 const workflow = [
-  "Upload knowledge packs",
-  "Register metadata on-chain",
-  "Let agents recall approved memories",
-  "Settle reads through wallet flows",
+  "Connect wallet",
+  "Seal knowledge pack",
+  "Register proof reference",
+  "Permit agent recall",
 ];
 
 export default function LandingPage() {
   return (
-    <div className="landing-shell min-h-screen bg-[#f7f8f5] text-[#10201f]">
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-[#10201f]/10 bg-[#f7f8f5]/90 backdrop-blur-xl">
+    <div className="landing-shell min-h-screen overflow-hidden bg-[#0A0A0B] text-[#F2F2F5]">
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_12%,rgba(123,92,250,0.20),transparent_30%),radial-gradient(circle_at_78%_8%,rgba(94,231,223,0.10),transparent_28%),linear-gradient(135deg,#0A0A0B,#0D0D10)]" />
+        <div className="absolute inset-0 opacity-[0.13] [background-image:linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(circle_at_50%_20%,black,transparent_72%)]" />
+        <div className="absolute left-1/2 top-24 h-px w-[72rem] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#5EE7DF]/35 to-transparent" />
+      </div>
+
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.08] bg-[#0A0A0B]/72 backdrop-blur-xl">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8">
           <Link href="/" className="flex items-center gap-3" aria-label="NeuroBase home">
-            <span className="flex h-11 w-11 items-center justify-center rounded-md bg-[#081817]">
+            <span className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-white/[0.08] bg-white/[0.03] shadow-[0_0_28px_rgba(94,231,223,0.10)]">
               <Image
                 src="/neurobase_logo-removebg-preview.png"
                 alt=""
-                width={36}
-                height={36}
+                width={32}
+                height={32}
                 priority
               />
             </span>
-            <span className="text-xl font-black tracking-tight text-[#10201f]">NeuroBase</span>
+            <span className="text-lg font-semibold tracking-[-0.03em] text-[#F2F2F5]">NeuroBase</span>
           </Link>
 
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-[#314341] md:flex">
+          <nav className="hidden items-center gap-8 text-sm font-medium text-[#9A9AA5] md:flex">
             {navItems.map((item) => (
-              <Link key={item.label} href={item.href} className="transition hover:text-[#008f8a]">
+              <Link key={item.label} href={item.href} className="transition duration-200 hover:text-[#F2F2F5]">
                 {item.label}
               </Link>
             ))}
@@ -80,130 +87,138 @@ export default function LandingPage() {
 
           <Link
             href="/dashboard"
-            className="inline-flex h-11 items-center gap-2 rounded-md bg-[#10201f] px-5 text-sm font-bold text-white shadow-sm transition hover:bg-[#008f8a]"
+            className="inline-flex h-11 items-center gap-2 rounded-[10px] bg-gradient-to-r from-[#7B5CFA] to-[#4C2FCB] px-5 text-sm font-semibold text-white shadow-[0_0_32px_rgba(123,92,250,0.24)] transition duration-200 hover:scale-[1.015] hover:shadow-[0_0_42px_rgba(123,92,250,0.34)]"
           >
-            Open App
+            Launch App
             <ArrowRight size={16} />
           </Link>
         </div>
       </header>
 
-      <main>
-        <section className="relative flex min-h-[88vh] items-center overflow-hidden pt-24">
-          <Image
-            src="/neurobase_logo.png"
-            alt="NeuroBase network brain visual"
-            fill
-            priority
-            className="absolute inset-0 object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,#f7f8f5_0%,rgba(247,248,245,0.94)_36%,rgba(247,248,245,0.56)_67%,rgba(247,248,245,0.18)_100%)]" />
-          <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,rgba(247,248,245,0),#f7f8f5)]" />
-
-          <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-5 pb-16 pt-14 sm:px-8 lg:grid-cols-[1.04fr_0.96fr] lg:items-end">
-            <div className="max-w-3xl">
-              <div className="mb-7 inline-flex items-center gap-2 rounded-md border border-[#008f8a]/25 bg-white/70 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-[#006d68]">
-                <BadgeCheck size={15} />
-                Verifiable AI Memory
-              </div>
-              <h1 className="text-5xl font-black leading-[1.02] tracking-tight text-[#10201f] sm:text-6xl lg:text-7xl">
-                NeuroBase
-              </h1>
-              <p className="mt-7 max-w-2xl text-lg font-medium leading-8 text-[#405552] sm:text-xl">
-                A polished memory layer for storing, pricing, and recalling AI knowledge through Shelby storage, Aptos metadata, and an MCP-compatible backend.
-              </p>
-              <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/dashboard"
-                  className="inline-flex h-13 items-center justify-center gap-2 rounded-md bg-[#008f8a] px-7 text-sm font-black uppercase tracking-[0.12em] text-white shadow-[0_16px_40px_rgba(0,143,138,0.24)] transition hover:bg-[#10201f]"
-                >
-                  Launch Dashboard
-                  <ArrowRight size={18} />
-                </Link>
-                <Link
-                  href="/marketplace"
-                  className="inline-flex h-13 items-center justify-center gap-2 rounded-md border border-[#10201f]/15 bg-white/70 px-7 text-sm font-black uppercase tracking-[0.12em] text-[#10201f] transition hover:border-[#008f8a] hover:text-[#008f8a]"
-                >
-                  View Marketplace
-                  <ChevronRight size={18} />
-                </Link>
-              </div>
+      <main className="relative z-10">
+        <section className="mx-auto grid min-h-[92vh] max-w-7xl gap-12 px-5 pb-20 pt-32 sm:px-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
+          <div className="animate-in fade-in slide-in-from-bottom-3 duration-500">
+            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#5EE7DF]">
+              <BadgeCheck size={14} />
+              Confidential AI Memory
             </div>
+            <h1 className="max-w-3xl text-5xl font-semibold leading-[1.03] tracking-[-0.055em] text-[#F2F2F5] sm:text-6xl lg:text-7xl">
+              Verifiable memory for agentic systems.
+            </h1>
+            <p className="mt-7 max-w-2xl text-lg font-light leading-[1.7] text-[#9A9AA5]">
+              NeuroBase gives AI agents a controlled way to recall encrypted knowledge packs through Shelby storage, Aptos metadata, and an MCP-compatible access boundary.
+            </p>
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/dashboard"
+                className="inline-flex h-13 items-center justify-center gap-2 rounded-[10px] bg-gradient-to-r from-[#7B5CFA] to-[#4C2FCB] px-7 text-sm font-semibold text-white shadow-[0_0_36px_rgba(123,92,250,0.28)] transition duration-200 hover:scale-[1.015] hover:shadow-[0_0_50px_rgba(123,92,250,0.42)]"
+              >
+                Connect Secure Workspace
+                <ArrowRight size={18} />
+              </Link>
+              <Link
+                href="/docs"
+                className="inline-flex h-13 items-center justify-center gap-2 rounded-[10px] border border-white/[0.08] bg-white/[0.03] px-7 text-sm font-semibold text-[#F2F2F5] transition duration-200 hover:border-[#5EE7DF]/40 hover:bg-white/[0.055]"
+              >
+                Read Protocol Notes
+                <KeyRound size={18} />
+              </Link>
+            </div>
+          </div>
 
-            <div className="grid gap-3 sm:grid-cols-3 lg:mb-5">
-              {metrics.map((metric) => (
-                <div key={metric.value} className="rounded-md border border-white/55 bg-white/72 p-5 shadow-sm backdrop-blur-md">
-                  <p className="text-2xl font-black tracking-tight text-[#10201f]">{metric.value}</p>
-                  <p className="mt-2 text-sm font-semibold leading-5 text-[#536865]">{metric.label}</p>
+          <div className="relative animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="absolute inset-8 rounded-full bg-[#7B5CFA]/20 blur-[90px]" />
+            <div className="relative rounded-[10px] border border-white/[0.08] bg-white/[0.03] p-5 shadow-[0_24px_90px_rgba(0,0,0,0.42)] backdrop-blur-xl">
+              <div className="mb-5 flex items-center justify-between border-b border-white/[0.08] pb-4">
+                <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.18em] text-[#9A9AA5]">
+                  <Cpu size={15} className="text-[#5EE7DF]" />
+                  Secure Enclave View
                 </div>
-              ))}
+                <div className="h-2 w-2 rounded-full bg-[#5EE7DF] shadow-[0_0_18px_rgba(94,231,223,0.8)]" />
+              </div>
+              <div className="relative overflow-hidden rounded-[8px] border border-white/[0.08] bg-[#0D0D10]">
+                <Image
+                  src="/neurobase_logo.png"
+                  alt="NeuroBase encrypted network visual"
+                  width={1024}
+                  height={1024}
+                  priority
+                  className="aspect-[1.12/1] w-full object-cover opacity-80 mix-blend-screen"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,13,16,0.04),rgba(13,13,16,0.76))]" />
+                <div className="absolute bottom-4 left-4 right-4 grid gap-3 sm:grid-cols-3">
+                  {metrics.map((metric) => (
+                    <div key={metric.value} className="rounded-[8px] border border-white/[0.08] bg-[#0A0A0B]/72 p-4 backdrop-blur-md">
+                      <p className="font-mono text-sm font-semibold text-[#F2F2F5]">{metric.value}</p>
+                      <p className="mt-2 text-xs leading-5 text-[#9A9AA5]">{metric.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        <section id="platform" className="border-y border-[#10201f]/10 bg-white">
+        <section id="protocol" className="border-y border-white/[0.08] bg-white/[0.015]">
           <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
             <div className="max-w-2xl">
-              <p className="text-sm font-black uppercase tracking-[0.22em] text-[#008f8a]">Platform</p>
-              <h2 className="mt-4 text-3xl font-black tracking-tight text-[#10201f] sm:text-4xl">
-                Built for a working AI memory product.
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-[#5EE7DF]">Protocol Surface</p>
+              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-[#F2F2F5] sm:text-4xl">
+                Minimal primitives for high-trust AI data access.
               </h2>
             </div>
-
             <div className="mt-11 grid gap-5 md:grid-cols-3">
-              {platformCards.map((card) => (
-                <article key={card.title} className="rounded-md border border-[#10201f]/10 bg-[#f7f8f5] p-7">
-                  <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-md bg-[#10201f] text-[#2ee9dc]">
-                    <card.icon size={24} />
+              {protocolCards.map((card) => (
+                <article key={card.title} className="rounded-[10px] border border-white/[0.08] bg-white/[0.03] p-7 transition duration-200 hover:-translate-y-1 hover:border-[#7B5CFA]/35">
+                  <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-[10px] border border-white/[0.08] bg-[#0D0D10] text-[#5EE7DF]">
+                    <card.icon size={23} strokeWidth={1.8} />
                   </div>
-                  <h3 className="text-xl font-black tracking-tight">{card.title}</h3>
-                  <p className="mt-4 text-sm font-medium leading-6 text-[#536865]">{card.copy}</p>
+                  <h3 className="text-xl font-semibold tracking-[-0.025em] text-[#F2F2F5]">{card.title}</h3>
+                  <p className="mt-4 text-sm font-light leading-[1.7] text-[#9A9AA5]">{card.copy}</p>
                 </article>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="workflow" className="bg-[#10201f] text-white">
-          <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
-            <div>
-              <p className="text-sm font-black uppercase tracking-[0.22em] text-[#2ee9dc]">Workflow</p>
-              <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">
-                From file upload to agent recall.
-              </h2>
-              <p className="mt-5 text-base font-medium leading-7 text-white/68">
-                The interface now presents NeuroBase as a focused product: storage, verification, access, and earnings are separated into a clear journey.
-              </p>
-            </div>
+        <section id="workflow" className="mx-auto grid max-w-7xl gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.24em] text-[#5EE7DF]">Workflow</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-[#F2F2F5] sm:text-4xl">
+              One path from ownership to recall.
+            </h2>
+            <p className="mt-5 text-base font-light leading-[1.7] text-[#9A9AA5]">
+              Each step keeps the interface quiet and explicit: authenticate, seal, register, and grant access through a narrow agent boundary.
+            </p>
+          </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              {workflow.map((item, index) => (
-                <div key={item} className="rounded-md border border-white/10 bg-white/[0.055] p-6">
-                  <p className="text-sm font-black text-[#f4b95a]">0{index + 1}</p>
-                  <p className="mt-4 text-lg font-black tracking-tight">{item}</p>
-                </div>
-              ))}
-            </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {workflow.map((item, index) => (
+              <div key={item} className="rounded-[10px] border border-white/[0.08] bg-white/[0.03] p-6">
+                <p className="font-mono text-xs font-semibold text-[#5EE7DF]">0{index + 1}</p>
+                <p className="mt-4 text-lg font-semibold tracking-[-0.025em] text-[#F2F2F5]">{item}</p>
+              </div>
+            ))}
           </div>
         </section>
 
-        <section id="security" className="bg-[#f7f8f5]">
+        <section id="trust" className="border-t border-white/[0.08] bg-[#0D0D10]">
           <div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 sm:px-8 lg:grid-cols-3">
-            <div className="lg:col-span-1">
-              <p className="text-sm font-black uppercase tracking-[0.22em] text-[#008f8a]">Security</p>
-              <h2 className="mt-4 text-3xl font-black tracking-tight text-[#10201f]">
-                Designed around user-owned knowledge.
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-[#5EE7DF]">Trust Model</p>
+              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-[#F2F2F5]">
+                Built for sensitive knowledge surfaces.
               </h2>
             </div>
             <div className="grid gap-5 sm:grid-cols-3 lg:col-span-2">
               {[
                 { icon: ShieldCheck, title: "Verified References" },
-                { icon: LockKeyhole, title: "Wallet-Gated Access" },
-                { icon: Network, title: "Decentralized Storage" },
+                { icon: LockKeyhole, title: "Wallet-Gated Reads" },
+                { icon: Fingerprint, title: "Controlled Identity" },
               ].map((item) => (
-                <div key={item.title} className="rounded-md border border-[#10201f]/10 bg-white p-6">
-                  <item.icon className="text-[#008f8a]" size={26} />
-                  <p className="mt-5 text-base font-black tracking-tight text-[#10201f]">{item.title}</p>
+                <div key={item.title} className="rounded-[10px] border border-white/[0.08] bg-white/[0.03] p-6">
+                  <item.icon className="text-[#5EE7DF]" size={25} strokeWidth={1.8} />
+                  <p className="mt-5 text-base font-semibold tracking-[-0.025em] text-[#F2F2F5]">{item.title}</p>
                 </div>
               ))}
             </div>
@@ -211,18 +226,18 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-[#10201f]/10 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-9 text-sm font-semibold text-[#536865] sm:px-8 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-3 text-[#10201f]">
-            <Image src="/neurobase_logo-removebg-preview.png" alt="" width={34} height={34} />
-            <span className="font-black">NeuroBase</span>
+      <footer className="relative z-10 border-t border-white/[0.08] bg-[#0A0A0B]">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-9 text-sm font-light text-[#9A9AA5] sm:px-8 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-3 text-[#F2F2F5]">
+            <Image src="/neurobase_logo-removebg-preview.png" alt="" width={32} height={32} />
+            <span className="font-semibold tracking-[-0.02em]">NeuroBase</span>
           </div>
           <div className="flex flex-wrap gap-5">
-            <Link href="/docs" className="hover:text-[#008f8a]">Docs</Link>
-            <Link href="/dashboard" className="hover:text-[#008f8a]">Dashboard</Link>
-            <Link href="/settings" className="hover:text-[#008f8a]">Settings</Link>
+            <Link href="/docs" className="hover:text-[#F2F2F5]">Docs</Link>
+            <Link href="/dashboard" className="hover:text-[#F2F2F5]">Dashboard</Link>
+            <Link href="/settings" className="hover:text-[#F2F2F5]">Settings</Link>
           </div>
-          <p>Built on Shelby and Aptos rails.</p>
+          <p className="font-mono text-xs uppercase tracking-[0.18em]">Shelby / Aptos / MCP</p>
         </div>
       </footer>
     </div>
